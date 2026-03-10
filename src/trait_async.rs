@@ -1,3 +1,5 @@
+#![allow(async_fn_in_trait)]
+
 use std::path::PathBuf;
 
 use crate::games::GameHighScore;
@@ -72,12 +74,7 @@ macro_rules! request_f {
 }
 
 // Wasm target need not be `Send` because it is single-threaded
-#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
-#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
-pub trait AsyncTelegramApi
-where
-    Self: Sync,
-{
+pub trait AsyncTelegramApi {
     type Error;
 
     request!(getUpdates, Vec<Update>);
